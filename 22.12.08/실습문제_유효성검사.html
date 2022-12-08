@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>유효성검사</title>
+    <style>
+    table#enroll{
+        border: 1px solid;
+        border-spacing:10px;
+        width: 500px;
+        margin: 0 auto;
+    }
+    table#enroll th{
+        text-align:right;
+    }
+    table#enroll td.btn-wrapper{
+        text-align: center;
+    }
+    .phone {
+        width:30px;
+    }
+    span.req{
+        color:red;
+    }
+    .short{
+        width:50px;
+    }
+    </style>
+</head>
+<body>
+    <h3>회원가입 유효성검사</h3>
+	<p>회원가입시 각 필드마다 유효성 검사를 하여 처리 할 수 있도록 작성하세요.</p>
+    <ol>
+      <li>ID는 영어소문자,숫자만 가능해야함(4~12자리,소문자로 시작해야함)</li>
+      <li>비밀번호는 숫자/문자/특수문자(*!&) 포함 형태의 8~15자리</li>
+      <li>비밀번호와 비밀번호확인은 같아야 함</li>
+      <li>이름은 무조건 한글만 가능해야 함(최소2글자 이상)</li>
+      <li>주민번호는 자릿수6자리,7자리이고, 모두 숫자여야함.</li>
+      <li>이메일은 @가 포함 되어야 함(@앞에가 영문자,숫자로 4~12글자 )</li>
+      <li>전화번호
+        <ol>
+          <li>첫번째 필드는 두자리수 이상 입력해야 함.</li>
+          <li>두번째 필드는 3자리 이상 입력 해야 함</li>
+          <li>세번째 필드는 무조건 4자리 입력 해야함</li>
+          <li>(모두 숫자만 가능 해야함)</li>
+        </ol>
+      </li>
+    </ol>
+    <form action="javascript:alert('제출성공');" name="memberFrm">
+        <table id="enroll">
+            <tr>
+                <th>아이디<span class="req">*</span></th>
+                <td>
+                    <input type="text" name="userId" id="userId" required>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호<span class="req">*</span></th>
+                <td>
+                    <input type="password" name="pwd" id="pwd" required>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호확인</th>
+                <td>
+                    <input type="password" id="pwdCheck">
+                </td>
+            </tr>
+            <tr>
+                <th>이름<span class="req">*</span></th>
+                <td>
+                    <input type="text" name="userName" id="userName" required> 
+                </td>
+            </tr>
+            <tr>
+                <th>주민번호<span class="req">*</span></th>
+                <td>
+                    <input type="text" name="ssn1" id="ssn1" class="short" required>-
+                    <input type="password" name="ssn2" id="ssn2" class="short" required>
+                </td>
+            </tr>
+            <tr>
+                <th>이메일<span class="req">*</span></th>
+                <td>
+                    <input type="email" name="email" id="email" required>
+                </td>
+            </tr>
+            <tr>
+                <th>전화번호<span class="req">*</span></th>
+                <td>
+                    <input type="text" name="tel1" id="tel1" class="phone" required>-
+                    <input type="text" name="tel2" id="tel2" class="phone" required>-
+                    <input type="text" name="tel3" id="tel3" class="phone" required>
+                </td>
+            </tr>
+            <tr>
+                <th>직업</th>
+                <td>
+                    <select name="job" id="job">
+                        <option value="공무원">공무원</option>
+                        <option value="개발자">개발자</option>
+                        <option value="무직">무직</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>취미</th>
+                <td>
+                    <input type="checkbox" name="hobby" id="hobby1" value="reading">
+                    <label for="hobby1">독서</label>
+                    <input type="checkbox" name="hobby" id="hobby2" value="development">
+                    <label for="hobby2">개발</label>
+                    <input type="checkbox" name="hobby" id="hobby3" value="exercise">
+                    <label for="hobby3">운동</label>
+                    <input type="checkbox" name="hobby" id="hobby4" value="game">
+                    <label for="hobby4">게임</label>
+                    <input type="checkbox" name="hobby" id="hobby5" value="movie">
+                    <label for="hobby5">영화</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="btn-wrapper">
+                    <input type="submit" value="제출">&nbsp;
+                    <input type="reset" value="초기화">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script>
+	 document.memberFrm.onsubmit = function(){
+        //1.아이디검사 : 영소문자, 숫자
+        if(!/^[a-z]/.test(userId.value)){
+            alert("아이디 첫 글자는 영소문자만 가능합니다.");
+            return false;
+        }
+        if(!/\d/.test(userId.value)){
+            alert("아이디는 숫자를 하나이상 포함해야 합니다.");
+            return false;
+        }
+        if(!/^.{4,12}$/.test(userId.value)){
+            alert("아이디는 4 ~ 12글자여야 합니다.");
+            return false;
+        }
+
+        //2.비밀번호 확인 검사
+        //숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호 정규식 
+        const pwVal = pwd.value;
+        const pwCfm = pwdCheck.value;
+        if(!/^.{8,15}$/.test(pwVal)){
+            alert("비밀번호는 8 ~ 15자리여야 합니다.");
+            return false; 
+        }
+        if(!/\d/.test(pwVal)){
+            alert("비밀번호는 숫자를 하나이상 포함해야 합니다.");
+            return false;
+        }
+        if(!/[*!&]/.test(pwVal)){ 
+            alert("비밀번호는 다음 특수문자 *!& 하나이상 포함해야 합니다.");
+            return false;
+        }        
+	    //비밀번호일치여부 검사
+        if(pwVal !== pwCfm){
+            alert("비밀번호가 일치하지 않습니다.");
+            pwdCheck.select(); 
+            return false;
+        }
+
+        //3.이름검사 : 한글2글자 이상만 허용. 
+        if(/[^가-힣]/.test(userName.value)){
+            alert("이름은 한글만 허용됩니다.");
+            return false;
+        }
+        if(!/.{2,}/.test(userName.value)){
+            alert("이름은 2글자 이상이어야 합니다.");
+            return false;
+        }
+
+        //4.주민번호체크
+        if(!/^\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]3[01]$)/.test(ssn1.value)){
+            alert("주민번호 앞자리를 6자리의 숫자(생년월일)로 입력해주세요.");
+            return false;
+        }
+        if(!/^[1-4]\d{6}$/.test(ssn2.value)){
+            alert("주민번호 뒷자리를 7자리의 숫자로 입력해주세요.");
+            return false;
+        }
+        
+        //5.이메일 검사
+        // @ 앞부분
+        const beforeAt = email.value.match(/.+(?=@)/);
+        // 영문자/숫자
+        if(!/^[a-zA-Z0-9]$/.test(beforeAt[0])){
+            alert("@ 앞은 영문자/숫자만 입력 가능합니다.");
+            return false;
+        }
+        // 4 ~ 12글자
+        if(!/^.{4,12}$/.test(beforeAt[0])){
+            alert("@ 앞은 영문자/숫자 4~12글자로 입력하세요.");
+            return false;
+        }
+
+        //6. 전화번호 검사
+        // (모두 숫자만 가능 해야함)
+        const telVal = tel1.value + tel2.value + tel3.value;
+        if(/^\d/.test(telVal)){
+            alert("전화번호는 숫자만 입력 가능합니다.");
+            return false;
+        }
+        // tel1 - 첫번째 필드는 두자리수 이상 입력해야 함
+        if(!/^.{2,}$/.test(tel1.value)){
+            alert("전화번호 첫번째 필드는 2자리 이상 입력해야 합니다.");
+            return false;
+        }
+        // tel2 - 두번째 필드는 3자리 이상 입력 해야 함
+        if(!/^.{3,}$/.test(tel2.value)){
+            alert("전화번호 두번째 필드는 3자리 이상 입력해야 합니다.");
+            return false;
+        }
+        // tel3 - 세번째 필드는 무조건 4자리 입력 해야함
+        if(!/^.{4}$/.test(tel3.value)){
+            alert("전화번호 세번째 필드는 반드시 4자리로 입력해야 합니다.");
+            return false;
+        }
+        return true;
+    }
+    
+    </script>
+
+
+</body>
+</html>
