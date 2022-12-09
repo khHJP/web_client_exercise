@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@비동기함수_avatar</title>
+</head>
+<body>
+    <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js" 
+    integrity="sha512-zJYu9ICC+mWF3+dJ4QC34N9RA0OVS1XtPbnf6oXlvGrLGNB8egsEzu/5wgG90I61hOOKvcywoLzwNmPqGAdATA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <button id="btn14">@실습문제 - github 아바타 출력</button>
+    <div class="avartar-wrapper" style="width: 300px; height: 300px; margin: 10px 0;"></div>
+    <script>
+    /**
+     * @ 실습문제
+     * 1. https://api.github.com/users/khHJP avatar_url조회
+     * 2. img태그 생성
+     * 3. img태그 생성 3초후 제거
+     * 
+     * promise버전
+     * async|await버전
+     */
+
+     // promise.ver
+    btn14.onclick = () => {
+        axios('https://api.github.com/users/khHJP')
+            .then((data) => {
+                return loadAvatar(data);
+            })
+            .then(() => {
+                setTimeout(() => {
+                    document.querySelector(".avartar-wrapper").remove();
+                }, 3000);
+            });
+    };
+     
+    // async.ver
+    btn14.onclick = async () => {
+        const response = await axios('https://api.github.com/users/khHJP');
+        console.log(response);
+        await loadAvatar(response);
+
+        setTimeout(() => {
+            document.querySelector(".avartar-wrapper img").remove();
+        }, 3000);
+
+        
+    };
+
+    const loadAvatar = ({data : {avatar_url, status}}) => new Promise((resolve) => {
+        const img = document.createElement('img');
+        img.src = avatar_url;
+        document.querySelector(".avartar-wrapper").append(img);
+        img.onload = resolve;
+    });
+    </script>
+</body>
+</html>
